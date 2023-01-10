@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.digital.sql.mapper.PersonMapper">
+	
+	<resultMap id="personMap" type="com.digital.sql.vo.PersonVO">
+		<result column="personid" property="personId"/>
+		<result column="personname" property="personName"/>
+		<result column="gender" property="gender"/>
+		<result column="password" property="password"/>
+		<collection property="phoneList" ofType="com.digital.sql.vo.PhoneVO">
+			<result column="phoneid" property="phoneId"/>
+			<result column="phonenumber" property="phoneNumber"/>
+		</collection>
+		<collection property="addressList" ofType="com.digital.sql.vo.AddressVO">
+			<result column="addressid" property="addressId"/>
+			<result column="addressdetail" property="addressDetail"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getPerson" resultMap="personMap">
+		select p.personid, p.personname, p.gender, p.password,
+			   ph.phoneid, ph.phonenumber,
+			   a.addressid, a.addressdetail
+		from person p join partyphone pp on p.personid=pp.personid
+		         	  join phone ph on ph.phoneid=pp.phoneid
+		           	  join partyaddress pa on p.personid=pa.personid
+		         	  join address a on a.addressid=pa.addressid
+		where p.personname = #{personName}
+	</select>
+	
+	<select id="getPhone" resultType="com.digital.sql.vo.PhoneVO">
+		select ph.phoneid, ph.phonenumber
+		from phone ph join partyphone pp on ph.phoneid=pp.phoneid
+				 	  join person p on p.personid=pp.personid
+		where ph.phonenumber = #{phoneNumber}
+	</select>
+	
+	<select id="getAddress" resultType="com.digital.sql.vo.AddressVO">
+		select a.addressid, a.addressdetail
+		from address a join partyaddress pa on a.addressid=pa.addressid
+					   join person p on pa.personid=p.personid
+		where a.addressdetail = #{addressDetail}
+	</select>
+	
+	<select id="getPhoneById" resultType="com.digital.sql.vo.PhoneVO">
+		select ph.phoneid, ph.phonenumber
+		from phone ph, partyphone pp
+		where ph.phoneid = #{phoneId} and ph.phoneid = pp.phoneid
+	</select>
+
+	<select id="getAddressById" resultType="com.digital.sql.vo.AddressVO">
+		select addr.addressid, addr.addressdetail
+		from address addr, partyaddress partyaddr
+		where addr.addressid = #{addressId} and partyaddr.addressid = addr.addressid
+	</select>
+	
+	<insert id="setPerson" parameterType="com.digital.sql.vo.PersonVO">
+		insert into person(personid, personname, password, gender) values(#{personId}, #{personName}, #{password}, #{gender})
+	</insert>
+	
+	<insert id="setPhone" parameterType="com.digital.sql.vo.PhoneVO">
+		insert into phone(phoneid, phonenumber) values(#{phoneId}, #{phoneNumber})
+	</insert>
+	
+	<insert id="setAddress" parameterType="com.digital.sql.vo.AddressVO">
+		insert into address(addressid, addressdetail) values(#{addressId}, #{addressDetail})
+	</insert>
+	
+	<insert id="setPartyPhone" parameterType="com.digital.sql.vo.PartyPhoneVO">
+		insert into partyphone(phoneid, personid) values(#{phoneId}, #{personId})
+	</insert>
+		
+	<insert id="setPartyAddress" parameterType="com.digital.sql.vo.PartyAddressVO">
+		insert into partyaddress(addressid, personid) values(#{addressId}, #{personId})
+	</insert>
+</mapper>
