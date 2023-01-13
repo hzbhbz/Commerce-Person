@@ -47,7 +47,7 @@ pipeline {
         script {
           echo "Deploy App START"
           sh "/usr/local/bin/kubectl --kubeconfig=/home/jenkins/acloud-client.conf apply -f person_deployment_v1.yaml"
-          sh "/usr/local/bin/kubectl --kubeconfig=/home/jenkins/acloud-client.conf set image deployments/commerce-person person-cotainer=192.168.100.12/bb-edu/commerce-person:$BUILD_NUMBER -n bb-edu"
+          sh "/usr/local/bin/kubectl --kubeconfig=/home/jenkins/acloud-client.conf set image deployments/commerce-person person-container=192.168.100.12/bb-edu/commerce-person:$BUILD_NUMBER -n bb-edu"
           echo "Deploy App END"
         }
       }
