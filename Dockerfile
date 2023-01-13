@@ -12,7 +12,7 @@ RUN chown -R wasadm:wasadm /app
 RUN cd /app
 RUN git clone https://github.com/hzbhbz/Jennifer.git /app/agent.java
 RUN git clone https://github.com/hzbhbz/Commerce-Common.git /app/Commerce-Common
-RUN git clone https://github.com/hzbhbz/Commerce-Auth.git /app/Commerce-Person
+RUN git clone https://github.com/hzbhbz/Commerce-Person.git /app/Commerce-Person
 
 WORKDIR /app/Commerce-Person
 
