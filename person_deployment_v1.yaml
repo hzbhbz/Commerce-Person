@@ -3,9 +3,6 @@ kind: Deployment
 metadata:
   annotations:
     acornsoft.io/workload-group-no: "1"
-  generation: 1
-  labels:
-    app: commerce-person
   name: commerce-person
   namespace: bb-edu
 spec:
@@ -25,9 +22,9 @@ spec:
         version: v1
     spec:
       containers:
-      - image: 192.168.100.12/bb-edu/commerce-person:v1
+      - image: 192.168.100.12/bb-edu/commerce-person:1
         imagePullPolicy: Always
-        name: person-cotainer
+        name: person-container
       dnsPolicy: ClusterFirst
       imagePullSecrets:
       - name: commerce-cocktail-t8ceb0dry5v7
